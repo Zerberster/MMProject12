@@ -194,10 +194,21 @@ outputDebugInfo();
     //split text into lines if necessary
     Text = dialog_SatzZeilenBruch(Text, pixSize);
 
-    //fill dialogbox linewise
-    for( var i = 0; i < Text.length; i++ ){
+    //fill dialogbox letter- and linewise
+    var dialog_LangsameAusgabe = function (message, index, interval) {
+        if (index < message.length) {
+        	ctx.fillText(message[index++].replace(/#KOMMA#/g, ","), textXPos, textYOffset + ( gTalk.line_distance * index ));  
+            setTimeout(function () {dialog_LangsameAusgabe(message, index, interval);}, interval); //recursive function to delay every char via setTimeout
+        }
+    };
+
+    $(function () {showText(Text, 0, 100);}); //function-call 
+
+/*  Old Printout all at once  
+    for( var i = 0; i < Text.length; i++ ){   
         ctx.fillText(Text[i].replace(/#KOMMA#/g, ","), textXPos, textYOffset + ( gTalk.line_distance * i ));
     };
+*/
 
     //increment sentence counter
     ++gTalk.SatzCounter;
